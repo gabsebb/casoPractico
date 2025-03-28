@@ -7,39 +7,44 @@ import com.example.votacionpresidencial.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@RequiredArgsConstructor
-@Slf4j
+@Transactional
+@Profile("heroku")
 public class DataInit implements CommandLineRunner {
 
-    private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
+    private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public DataInit(RolRepository rolRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+
+        this.rolRepository = rolRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
-    @Transactional
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
+        if (rolRepository.count() == 0) {
+            Rol adminRol = new Rol();
+            adminRol.setNombre("ADMIN");
+            rolRepository.save(adminRol);
 
-        Rol rolAdmin = rolRepository.findByNombre("ADMIN")
-                .orElseGet(() -> {
-                    Rol nuevoRol = new Rol();
-                    nuevoRol.setNombre("ADMIN");
-                    return rolRepository.save(nuevoRol);
-                });
-
-
-        if (usuarioRepository.findByUsername("admin").isEmpty()) {
+            Rol votanteRol = new Rol();
+            votanteRol.setNombre("VOTANTE");
+            rolRepository.save(votanteRol);
+        }
+        if (usuarioRepository.count() == 0) {
             Usuario admin = new Usuario();
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("admin123"));
-            admin.setRol(rolAdmin);
-
+            admin.setRol(rolRepository.findByNombre("ADMIN").orElseThrow());
             usuarioRepository.save(admin);
-            log.info("Usuario admin creado: admin/admin123");
         }
     }
 }
