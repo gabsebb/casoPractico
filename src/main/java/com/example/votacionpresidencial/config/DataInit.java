@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
+@Profile("heroku")
 public class DataInit implements CommandLineRunner {
 
     private final RolRepository rolRepository;
