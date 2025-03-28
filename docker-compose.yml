@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:13-alpine
+    container_name: votapp_db
+    environment:
+      POSTGRES_DB: votapp_dev
+      POSTGRES_USER: votapp_user
+      POSTGRES_PASSWORD: votapp_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
