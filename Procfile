@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=heroku -jar target/tu-app.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=heroku -jar target/votacionPresidencial.jar
