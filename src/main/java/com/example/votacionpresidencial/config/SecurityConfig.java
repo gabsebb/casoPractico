@@ -19,6 +19,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -32,7 +33,8 @@ public class SecurityConfig {
                                 "/static/**",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/assets/**",
+                                "/img/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -65,9 +67,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

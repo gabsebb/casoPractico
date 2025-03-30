@@ -10,12 +10,10 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginPage(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return "redirect:/dashboard";
+            return "redirect:admin/dashboard";
         }
         return "login";
     }
     @GetMapping("/dashboard")
-    public String showDashboard() {
-        return "dashboard";
-    }
+    public String showDashboard() {return "dashboard";}
 }
