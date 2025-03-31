@@ -2,6 +2,7 @@ package com.example.votacionpresidencial.config;
 
 import com.example.votacionpresidencial.repositories.UsuarioRepository;
 import com.example.votacionpresidencial.services.CustomUserDetailsService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
@@ -35,15 +37,24 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/assets/**",
-                                "/img/**"
+                                "/img/**",
+                                "/acceso-denegado"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.DELETE,"/dashboard","/admin").hasRole("ADMIN")
+                        .requestMatchers("/dashboard",
+                                "/admin",
+                                "/personas/**",
+                                "/eliminarUsu/{id}",
+                                "/editarUsu/{id}").hasRole("ADMIN")
+                        .requestMatchers("/votacion").hasRole("VOTANTE")
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/acceso-denegado")
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .successHandler(customAuthenticationSuccessHandler())
                         .failureUrl("/login?error=true")
                         .permitAll()
                 ).rememberMe(remember -> remember
@@ -67,5 +78,30 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            String targetUrl = "/"; // Redirección por defecto
+
+            if (authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                targetUrl = "/dashboard";
+            } else if (authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_VOTANTE"))) {
+                targetUrl = "/votacion";
+            }
+
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                String redirectUrl = (String) session.getAttribute("url_prior_login");
+                if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                    targetUrl = redirectUrl;
+                    session.removeAttribute("url_prior_login");
+                }
+            }
+
+            response.sendRedirect(targetUrl);
+        };
     }
 }

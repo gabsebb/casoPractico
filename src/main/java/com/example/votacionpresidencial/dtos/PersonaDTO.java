@@ -7,6 +7,8 @@ import lombok.Data;
 
 @Data
 public class PersonaDTO {
+    private Long id;
+
     @NotBlank(message = "Cédula es obligatoria")
     @Size(min = 10, max = 10, message = "La cédula debe tener 10 dígitos")
     private String cedula;

@@ -10,10 +10,23 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginPage(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return "redirect:dashboard";
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            boolean isVotante = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_VOTANTE"));
+            if (isAdmin) {
+                return "redirect:/dashboard";
+            } else if (isVotante) {
+                return "redirect:/votacion";
+            }
         }
         return "login";
     }
     @GetMapping("/dashboard")
     public String showDashboard() {return "dashboard";}
+
+    @GetMapping("/votacion")
+    public String showVotacionPage(Authentication authentication) {
+            return "votantes/votacion";
+    }
 }

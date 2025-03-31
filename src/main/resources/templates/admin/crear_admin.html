@@ -117,6 +117,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre de Usuario</th>
+                                    <th>Rol</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
@@ -124,6 +125,7 @@
                                 <tr th:each="usuario : ${usuarios}">
                                     <td th:text="${usuario.id}">1</td>
                                     <td th:text="${usuario.username}">admin1</td>
+                                    <td th:text="${usuario.rol.getNombre()}"></td>
                                     <td class="action-buttons">
                                         <a th:href="@{/editarUsu/{id}(id=${usuario.id})}"
                                            class="btn btn-sm btn-warning me-1">

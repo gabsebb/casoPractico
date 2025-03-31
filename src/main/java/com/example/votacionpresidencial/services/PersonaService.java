@@ -4,13 +4,16 @@ import com.example.votacionpresidencial.models.Persona;
 import com.example.votacionpresidencial.models.Rol;
 import com.example.votacionpresidencial.models.Usuario;
 import com.example.votacionpresidencial.repositories.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.votacionpresidencial.dtos.PersonaDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -81,5 +84,46 @@ public class PersonaService {
 
     public List<Persona> listarPersonasConRelaciones() {
         return personaRepository.findAllWithRelations();
+    }
+
+    public Persona obtenerPersonaConRelaciones(Long id) {
+        return personaRepository.findByIdWithRelations(id).orElseThrow();
+    }
+
+    @Transactional
+    public void actualizarPersona(PersonaDTO personaDTO) {
+        Persona persona = personaRepository.findById(personaDTO.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Persona con ID " + personaDTO.getId() + " no encontrada"));
+        persona.setCedula(personaDTO.getCedula());
+        persona.setNombre(personaDTO.getNombre());
+        persona.setApellido(personaDTO.getApellido());
+
+        persona.setCiudad(ciudadRepository.findById(personaDTO.getCiudadId())
+                .orElseThrow(() -> new EntityNotFoundException("Ciudad no encontrada")));
+
+        persona.setGenero(generoRepository.findById(personaDTO.getGeneroId())
+                .orElseThrow(() -> new EntityNotFoundException("Género no encontrado")));
+
+        Usuario usuario = Optional.ofNullable(persona.getUsuario())
+                .orElseThrow(() -> new IllegalStateException("La persona no tiene usuario asociado"));
+
+        usuario.setUsername(personaDTO.getUsername());
+
+        if (StringUtils.hasText(personaDTO.getPassword())) {
+            usuario.setPassword(passwordEncoder.encode(personaDTO.getPassword()));
+        }
+
+        personaRepository.save(persona);
+    }
+
+    @Transactional
+    public void eliminarPersona(Long id) {
+        Persona persona = personaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada"));
+        if (persona.getUsuario() != null) {
+            usuarioRepository.delete(persona.getUsuario());
+        }
+
+        personaRepository.delete(persona);
     }
 }

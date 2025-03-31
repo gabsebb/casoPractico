@@ -13,6 +13,7 @@ com\example\votacionpresidencial\dtos\PersonaDTO.class
 com\example\votacionpresidencial\models\Genero.class
 com\example\votacionpresidencial\controllers\RegistroController.class
 com\example\votacionpresidencial\repositories\CiudadRepository.class
+com\example\votacionpresidencial\controllers\ErrorController.class
 com\example\votacionpresidencial\controllers\AdminController.class
 com\example\votacionpresidencial\controllers\LoginController.class
 com\example\votacionpresidencial\services\PersonaService.class
