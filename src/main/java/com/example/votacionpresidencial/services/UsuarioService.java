@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuarioService {
 
@@ -36,5 +38,32 @@ public class UsuarioService {
         admin.setPersona(null);
 
         usuarioRepository.save(admin);
+    }
+
+    public List<Usuario> listarusuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    public void actualizarUsuario(Long id, Usuario usuarioActualizado, String nuevaPassword) {
+        Usuario usuarioExistente = obtenerUsuarioPorId(id);
+        usuarioExistente.setUsername(usuarioActualizado.getUsername());
+        if (usuarioActualizado.getPassword() != null && !usuarioActualizado.getPassword().isEmpty()) {
+            usuarioExistente.setPassword(passwordEncoder.encode(nuevaPassword));
+        }
+        usuarioRepository.save(usuarioExistente);
+    }
+
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.findById(id).ifPresent(usuario -> {
+            if (usuario.getPersona() != null) {
+                usuario.setPersona(null);
+            }
+        });
+        usuarioRepository.deleteById(id);
     }
 }

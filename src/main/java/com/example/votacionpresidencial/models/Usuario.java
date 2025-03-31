@@ -27,6 +27,6 @@ public class Usuario {
     private Rol rol;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Persona persona; // Null para admins, con datos para votantes
+    private Persona persona;
 
 }

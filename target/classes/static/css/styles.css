@@ -109,6 +109,12 @@ body {
     background-repeat: no-repeat;
     background-position: center;
 }
+.registro{
+  background-image: url('../img/CNE_Ecuador.svg.png');
+  background-size: 50px;
+  background-repeat: repeat;
+  background-position: left;
+}
 hr {
   margin: 1rem 0;
   color: inherit;
