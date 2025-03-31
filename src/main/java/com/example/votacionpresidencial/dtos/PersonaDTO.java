@@ -25,9 +25,7 @@ public class PersonaDTO {
     @NotNull(message = "Género es obligatorio")
     private Long generoId;
 
-    @NotBlank(message = "Username es obligatorio")
     private String username;
 
-    @NotBlank(message = "Password es obligatorio")
     private String password;
 }

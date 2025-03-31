@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Agregar Candidato</title>
+</head>
+<body>
+<h1>Nuevo Candidato</h1>
+
+<form th:action="@{/candidatos/guardar}" th:object="${candidato}" method="post">
+  <div>
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" required>
+  </div>
+
+  <div>
+    <label>Cargo:</label>
+    <input type="text" th:field="*{cargo}" required>
+  </div>
+
+  <div>
+    <label>Partido Político:</label>
+    <select name="partidoId">
+      <option th:each="partido : ${partidos}"
+              th:value="${partido.id}"
+              th:text="${partido.nombre}"></option>
+    </select>
+  </div>
+
+  <button type="submit">Guardar Candidato</button>
+</form>
+
+<a th:href="@{/partidos/nuevo}">Volver a partidos</a>
+</body>
+</html>

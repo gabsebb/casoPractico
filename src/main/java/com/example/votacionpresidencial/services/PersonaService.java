@@ -6,6 +6,8 @@ import com.example.votacionpresidencial.models.Usuario;
 import com.example.votacionpresidencial.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.votacionpresidencial.dtos.PersonaDTO;
 import org.springframework.stereotype.Service;
@@ -43,8 +45,8 @@ public class PersonaService {
 
     public void guardarPersonaConUsuario(PersonaDTO personaDTO) {
         Usuario usuario = new Usuario();
-        usuario.setUsername(personaDTO.getUsername());
-        usuario.setPassword(passwordEncoder.encode(personaDTO.getPassword()));
+        usuario.setUsername(personaDTO.getCedula());
+        usuario.setPassword(passwordEncoder.encode(personaDTO.getCedula()));
         Rol rolAdmin = rolRepository.findByNombre("VOTANTE")
                 .orElseThrow(() -> new RuntimeException("Rol VOTANTE no configurado"));
         usuario.setRol(rolAdmin); // Asigna rol "VOTANTE"
@@ -62,24 +64,25 @@ public class PersonaService {
     }
 
     public boolean validarCedulaEcuatoriana(String cedula) {
-        if (cedula == null || cedula.length() != 10) return false;
+        if (cedula == null || !cedula.matches("\\d{10}")) return false;
 
-        try {
-            int[] coeficientes = {2, 1, 2, 1, 2, 1, 2, 1, 2};
-            int total = 0;
+        int provincia = Integer.parseInt(cedula.substring(0, 2));
+        if ((provincia < 1 || provincia > 24) && provincia != 30) return false;
 
-            for (int i = 0; i < 9; i++) {
-                int valor = Integer.parseInt(cedula.substring(i, i+1)) * coeficientes[i];
-                total += (valor > 9) ? valor - 9 : valor;
-            }
+        if (cedula.chars().distinct().count() == 1) return false;
 
-            int digitoVerificador = Integer.parseInt(cedula.substring(9));
-            int calculado = (10 - (total % 10)) % 10;
+        int[] coeficientes = {2, 1, 2, 1, 2, 1, 2, 1, 2};
+        int total = 0;
 
-            return digitoVerificador == calculado;
-        } catch (NumberFormatException e) {
-            return false;
+        for (int i = 0; i < 9; i++) {
+            int valor = (cedula.charAt(i) - '0') * coeficientes[i];
+            total += (valor > 9) ? valor - 9 : valor;
         }
+
+        int digitoVerificador = cedula.charAt(9) - '0';
+        int calculado = (10 - (total % 10)) % 10;
+
+        return digitoVerificador == calculado;
     }
 
     public List<Persona> listarPersonasConRelaciones() {
@@ -107,10 +110,10 @@ public class PersonaService {
         Usuario usuario = Optional.ofNullable(persona.getUsuario())
                 .orElseThrow(() -> new IllegalStateException("La persona no tiene usuario asociado"));
 
-        usuario.setUsername(personaDTO.getUsername());
+        usuario.setUsername(personaDTO.getCedula());
 
-        if (StringUtils.hasText(personaDTO.getPassword())) {
-            usuario.setPassword(passwordEncoder.encode(personaDTO.getPassword()));
+        if (StringUtils.hasText(personaDTO.getCedula())) {
+            usuario.setPassword(passwordEncoder.encode(personaDTO.getCedula()));
         }
 
         personaRepository.save(persona);
@@ -126,4 +129,6 @@ public class PersonaService {
 
         personaRepository.delete(persona);
     }
+
+
 }

@@ -15,7 +15,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="">Sistema de Votación</a>
+    <a class="navbar-brand ps-3" th:href="@{/login}">Sistema de Votación</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
@@ -46,19 +46,15 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Personas
                     </a>
-                    <div class="sb-sidenav-menu-heading">Reportes</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        General
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    <a class="nav-link" th:href="@{/partidos/nuevo}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Partidos
                     </a>
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="">G</a>
-                            <a class="nav-link" href="">C</a>
-                            <a class="nav-link" href="">P</a>
-                        </nav>
-                    </div>
+                    <div class="sb-sidenav-menu-heading">Reportes</div>
+                    <a class="nav-link" th:href="@{/}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Partidos
+                    </a>
 
                 </div>
             </div>
@@ -72,7 +68,9 @@
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">Este es el sistema de votacion 2025 :D</li>
                 </ol>
-                <img th:src="@{/img/ryo-yamada-thumbs-up.gif}" alt="Logo" width="800">
+                <div class="text-center">
+                    <img th:src="@{/img/Coat_of_arms_of_Ecuador.svg.png}" alt="Escudo del Ecuador" width="400" class="img-fluid">
+                </div>
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">

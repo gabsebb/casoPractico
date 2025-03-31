@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "votos")
+@Table(name = "votos", uniqueConstraints = @UniqueConstraint(columnNames = {"votante_id"}))
 public class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

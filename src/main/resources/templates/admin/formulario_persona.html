@@ -15,7 +15,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="">Sistema de Votación</a>
+    <a class="navbar-brand ps-3" th:href="@{/login}">Sistema de Votación</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
             class="fas fa-bars"></i></button>
@@ -43,25 +43,19 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Administradores
                     </a>
-                    <a class="nav-link" href="crear_usu.html">
+                    <a class="nav-link" th:href="@{/personas/nuevo}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Personas
                     </a>
-                    <div class="sb-sidenav-menu-heading">Reportes</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
-                       aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        General
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    <a class="nav-link" th:href="@{/partidos/nuevo}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Partidos
                     </a>
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
-                         data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="">G</a>
-                            <a class="nav-link" href="">C</a>
-                            <a class="nav-link" href="">P</a>
-                        </nav>
-                    </div>
+                    <div class="sb-sidenav-menu-heading">Reportes</div>
+                    <a class="nav-link" th:href="@{/}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Partidos
+                    </a>
 
                 </div>
             </div>
@@ -72,13 +66,13 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4" style="margin-left: 2rem;">
-                <h1 class="mt-4">USUARIOS-Personas</h1>
+                <h1 class="mt-4">USUARIOS-PERSONAS</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active"></li>
                 </ol>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form th:action="@{/templates/votantes/guardar}" th:object="${persona}" method="post">
+                        <form th:action="@{/personas/guardar}" th:object="${persona}" method="post">
                             <!-- Datos Personales -->
                             <div class="mb-3">
                                 <label class="form-label">Cédula</label>
@@ -121,7 +115,7 @@
                                 </div>
                             </div>
 
-                            <!-- Datos Usuario -->
+                            <!-- Datos Usuario
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Username</label>
@@ -131,7 +125,7 @@
                                     <label class="form-label">Password</label>
                                     <input type="password" class="form-control" th:field="*{password}">
                                 </div>
-                            </div>
+                            </div> -->
 
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
@@ -181,7 +175,7 @@
                                                 th:attr="data-bs-personaid=${persona.id}">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <a th:href="@{/templates/votantes/eliminarPerso/{id}(id=${persona.id})}"
+                                        <a th:href="@{/personas/eliminarPerso/{id}(id=${persona.id})}"
                                            class="btn btn-danger btn-sm"
                                            onclick="return confirmarEliminacion('¿Estás seguro de eliminar este usuario?');">
                                             <i class="fas fa-trash-alt"></i> Eliminar

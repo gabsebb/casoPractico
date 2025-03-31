@@ -17,16 +17,18 @@ public class LoginController {
             if (isAdmin) {
                 return "redirect:/dashboard";
             } else if (isVotante) {
-                return "redirect:/votacion";
+                return "redirect:/votacion";  // Changed from "/mostrar"
             }
         }
         return "login";
     }
-    @GetMapping("/dashboard")
-    public String showDashboard() {return "dashboard";}
 
-    @GetMapping("/votacion")
-    public String showVotacionPage(Authentication authentication) {
-            return "votantes/votacion";
+    @GetMapping("/dashboard")
+    public String showDashboard(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        return "dashboard";
     }
+
 }

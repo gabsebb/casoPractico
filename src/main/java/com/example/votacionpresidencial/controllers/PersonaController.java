@@ -34,7 +34,6 @@ public class PersonaController {
     private GeneroService generoService;
 
 
-
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
         List<Persona> personas = personaService.listarPersonasConRelaciones();
@@ -69,7 +68,7 @@ public class PersonaController {
         personaService.guardarPersonaConUsuario(personaDTO);
         redirectAttributes.addFlashAttribute("success", "Persona registrada exitosamente");
         return "redirect:/personas/nuevo";
-        }
+    }
 
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
@@ -91,6 +90,7 @@ public class PersonaController {
         model.addAttribute("persona", personaDTO);
         return "admin/editar_persona_form :: form";
     }
+
     @PostMapping("/actualizar")
     public String actualizarPersona(
             @ModelAttribute PersonaDTO personaDTO,
@@ -104,9 +104,16 @@ public class PersonaController {
             return "redirect:/personas";
         }
     }
+
     @GetMapping("/eliminarPerso/{id}")
-    public String eliminarPersona(@PathVariable Long id) {
+    public String eliminarPersona(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
             personaService.eliminarPersona(id);
-        return "redirect:/personas/nuevo";
+            return "redirect:/personas/nuevo";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al actualizar: " + e.getMessage());
+            return "acceso-denegado";
+        }
     }
 }
+

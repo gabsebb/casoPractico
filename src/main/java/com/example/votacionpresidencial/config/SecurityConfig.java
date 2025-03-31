@@ -44,8 +44,10 @@ public class SecurityConfig {
                                 "/admin",
                                 "/personas/**",
                                 "/eliminarUsu/{id}",
-                                "/editarUsu/{id}").hasRole("ADMIN")
-                        .requestMatchers("/votacion").hasRole("VOTANTE")
+                                "/editarUsu/{id}",
+                                "/partidos/**",
+                                "/candidatos/**").hasRole("ADMIN")
+                        .requestMatchers("/votacion/**").hasRole("VOTANTE")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

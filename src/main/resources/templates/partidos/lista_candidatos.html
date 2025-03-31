@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Candidatos del Partido</title>
+</head>
+<body>
+<h1>Candidatos de <span th:text="${partido.nombre}"></span></h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Cargo</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="candidato : ${candidatos}">
+    <td th:text="${candidato.nombre}"></td>
+    <td th:text="${candidato.cargo}"></td>
+    <td>
+      <a th:href="@{/candidatos/editar/{id}(id=${candidato.id})}">Editar</a>
+      <a th:href="@{/candidatos/eliminar/{id}(id=${candidato.id})}">Eliminar</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<a th:href="@{/candidatos/nuevo?partidoId={id}(id=${partido.id})}">Agregar nuevo candidato</a>
+<a th:href="@{/partidos/nuevo}">Volver a partidos</a>
+</body>
+</html>
