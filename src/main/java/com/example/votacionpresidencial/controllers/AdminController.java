@@ -61,8 +61,12 @@ public class AdminController {
 
     @GetMapping("/eliminarUsu/{id}")
     public String eliminarUsuario(@PathVariable Long id) {
+        try {
         usuarioService.eliminarUsuario(id);
         return "redirect:/admin";
+        } catch (IllegalArgumentException e) {
+            return "acceso-denegado";
+        }
     }
 
 }

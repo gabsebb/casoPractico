@@ -5,10 +5,8 @@ import com.example.votacionpresidencial.models.Persona;
 import com.example.votacionpresidencial.services.CiudadService;
 import com.example.votacionpresidencial.services.GeneroService;
 import com.example.votacionpresidencial.services.PersonaService;
-import com.example.votacionpresidencial.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +21,6 @@ public class PersonaController {
 
     @Autowired
     private PersonaService personaService;
-
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Autowired
     private CiudadService ciudadService;
@@ -44,15 +39,14 @@ public class PersonaController {
         return "admin/formulario_persona";
     }
 
-    // Procesar creación
     @PostMapping("/guardar")
     public String guardarPersona(
             @Valid @ModelAttribute("persona") PersonaDTO personaDTO,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes) {
-
-        // Validar cédula única
+        try {
+        // Validar que la cedula no se repita
         if (personaService.existeCedula(personaDTO.getCedula())) {
             result.rejectValue("cedula", "error.cedula", "La cédula ya está registrada");
         }
@@ -64,10 +58,13 @@ public class PersonaController {
             model.addAttribute("generos", generoService.listarTodos());
             return "admin/formulario_persona";
         }
-
         personaService.guardarPersonaConUsuario(personaDTO);
         redirectAttributes.addFlashAttribute("success", "Persona registrada exitosamente");
         return "redirect:/personas/nuevo";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error" + e.getMessage());
+            return "redirect:/personas/nuevo";
+        }
     }
 
     @GetMapping("/editar/{id}")

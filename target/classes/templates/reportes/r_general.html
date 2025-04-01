@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Reporte</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/img/Coat_of_arms_of_Ecuador.svg.png">
+    <style>
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 0 auto;
+        }
+        .card-shadow {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold text-bg-danger" th:text="${titulo}"></h1>
+    </div>
+
+    <div class="card card-shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-chart-pie me-2"></i> Distribución de Votos
+        </div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="graficoPastel"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-shadow">
+        <div class="card-header bg-dark text-white">
+            <i class="fas fa-table me-2"></i> Detalle de Votos
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Partido Político</th>
+                        <th class="text-center">Total de Votos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="entry : ${reporte}">
+                        <td th:text="${entry.key}"></td>
+                        <td class="text-end fw-bold" th:text="${entry.value}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Volver -->
+    <div class="text-center mt-4">
+        <a th:href="@{/reportes/index}" class="btn btn-primary px-4">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+        </a>
+    </div>
+</div>
+
+<!-- Script del gráfico (sin cambios) -->
+<script th:inline="javascript">
+    /* global Chart */
+    /*<![CDATA[*/
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('graficoPastel');
+        /** @type {HTMLCanvasElement} */
+        const labels = /*[[${grafico?.![label]}]]*/ [];
+        const values = /*[[${grafico?.![value]}]]*/ [];
+        const colors = /*[[${grafico?.![color]}]]*/ [];
+        /**
+         * @type {import('chart.js').Chart}
+         */
+        if (labels && values && colors) {
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' },
+                        title: { display: true, text: 'Distribución de Votos' }
+                    }
+                }
+            });
+        }
+    });
+    /*]]>*/
+</script>
+
+<!-- Font Awesome para iconos -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

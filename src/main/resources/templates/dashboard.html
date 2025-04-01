@@ -27,7 +27,9 @@
         <li class="nav-item dropdown">
             <form th:action="@{/logout}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+                </button>
             </form>
         </li>
     </ul>
@@ -37,25 +39,23 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Usuarios</div>
+                    <div class="sb-sidenav-menu-heading">Panel de control</div>
                     <a class="nav-link" th:href="@{/admin}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fa fa-lock"></i></div>
                         Administradores
                     </a>
                     <a class="nav-link" th:href="@{/personas/nuevo}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa fa-user"></i></div>
                         Personas
                     </a>
                     <a class="nav-link" th:href="@{/partidos/nuevo}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa fa-list-alt"></i></div>
                         Partidos
                     </a>
-                    <div class="sb-sidenav-menu-heading">Reportes</div>
-                    <a class="nav-link" th:href="@{/}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Partidos
+                    <a class="nav-link" th:href="@{/reportes/index}">
+                        <div class="sb-nav-link-icon"><i class="fas fa fa-pie-chart"></i></div>
+                        Reportes
                     </a>
-
                 </div>
             </div>
             <div class="sb-sidenav-footer"></div>

@@ -8,6 +8,7 @@ C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votac
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\controllers\PartidoController.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\controllers\PersonaController.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\controllers\RegistroController.java
+C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\controllers\ReporteController.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\controllers\VotoController.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\dtos\PersonaDTO.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\dtos\RegistroDTO.java
@@ -34,6 +35,7 @@ C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votac
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\services\GeneroService.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\services\PartidoService.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\services\PersonaService.java
+C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\services\ReporteService.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\services\UsuarioService.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\services\VotoService.java
 C:\Users\Gabse\IdeaProjects\votacionPresidencial\src\main\java\com\example\votacionpresidencial\VotacionPresidencialApplication.java

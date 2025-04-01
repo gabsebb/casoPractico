@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/eliminarUsu/{id}",
                                 "/editarUsu/{id}",
                                 "/partidos/**",
-                                "/candidatos/**").hasRole("ADMIN")
+                                "/candidatos/**",
+                                "/reportes/**").hasRole("ADMIN")
                         .requestMatchers("/votacion/**").hasRole("VOTANTE")
                         .anyRequest().authenticated()
                 )

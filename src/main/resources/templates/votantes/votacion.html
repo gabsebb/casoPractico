@@ -4,119 +4,203 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
+    <meta name="description" content="Sistema de Votación Electoral 2025"/>
     <meta name="author" content=""/>
     <title>Panel ADMIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link th:href="@{/css/styles.css}" rel="stylesheet"/>
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="/img/Coat_of_arms_of_Ecuador.svg.png">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .main-content {
+            flex: 1;
+            padding-top: 70px; /* Para la navbar fija */
+            width: 100%;
+        }
+
+        .voting-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .voting-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .voting-card label {
+            cursor: pointer;
+        }
+
+        .candidate-list {
+            border-left: 3px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .voting-header {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            padding: 10px 15px;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        footer {
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-<body class="sb-nav-fixed">
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" th:href="@{/login}">Sistema de Votación</a>
-    <!-- Sidebar Toggle-->
-    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <div class="input-group">
-        </div>
-    </form>
-    <!-- Navbar-->
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
-            <form th:action="@{/logout}" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
-            </form>
-        </li>
-    </ul>
-</nav>
-<div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
-                <div class="nav">
-                </div>
-            </div>
-            <div class="sb-sidenav-footer"></div>
-        </nav>
+<body>
+<!-- Navbar Superior -->
+<nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" th:href="@{/login}">
+            <i class="fas fa-vote-yea me-2"></i>Sistema de Votación
+        </a>
+
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+                    </button>
+                </form>
+            </li>
+        </ul>
     </div>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4">Bienvenido!</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Este es el sistema de votacion 2025 :D</li>
-                </ol>
-                <div th:if="${haVotado}">
-                    <h2>¡Ya has ejercido tu derecho al voto!</h2>
-                    <p>Gracias por participar en el proceso democrático.</p>
-                    <img th:src="@{/img/ryo-yamada-thumbs-up.gif}" height="280" width="498"/>
-                </div>
-                <div th:unless="${haVotado}">
-                    <h1>Votación Presidencial</h1>
-                    <p>Horario de votación: 7:00 AM - 5:00 PM (Hora de Ecuador)</p>
+</nav>
 
-                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+<!-- Contenido Principal Full Width -->
+<main class="main-content">
+    <div class="content-container">
+        <h1 class="mt-2 mb-3">Bienvenido!</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Este es el sistema de votación 2025 :D</li>
+        </ol>
 
-                    <form th:action="@{/votar}" method="post">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <div class="list-group">
-                            <div th:each="partido : ${partidos}" class="list-group-item mb-3">
-                                <div class="d-flex align-items-center">
-                                    <input type="radio" name="partidoId" th:value="${partido.id}"
-                                           th:id="${'partido_' + partido.id}" class="form-check-input me-3">
+        <div th:if="${haVotado}" class="text-center py-4">
+            <div class="alert alert-success py-4">
+                <h2><i class="fas fa-check-circle me-2"></i>¡Ya has ejercido tu derecho al voto!</h2>
+                <p class="lead">Gracias por participar en el proceso democrático.</p>
+                <img th:src="@{/img/ryo-yamada-thumbs-up.gif}" class="img-fluid rounded mt-3" style="max-height: 280px;"/>
+            </div>
+        </div>
 
-                                    <div>
+        <div th:unless="${haVotado}">
+            <div class="voting-header">
+                <h1><i class="fas fa-vote-yea me-2"></i>Votación Presidencial</h1>
+                <p class="text-muted">
+                    <i class="fas fa-clock me-1"></i>Horario de votación: 7:00 AM - 5:00 PM (Hora de Ecuador)
+                </p>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <form th:action="@{/votar}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <div th:each="partido : ${partidos}" class="col">
+                        <div class="voting-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start">
+                                    <div class="form-check me-3 mt-1">
+                                        <input type="radio" name="partidoId" th:value="${partido.id}"
+                                               th:id="${'partido_' + partido.id}" class="form-check-input">
+                                    </div>
+
+                                    <div class="flex-grow-1">
                                         <label th:for="${'partido_' + partido.id}" class="form-check-label">
-                                            <strong th:text="${partido.nombre}"></strong>
+                                            <h5 class="mb-1" th:text="${partido.nombre}"></h5>
                                         </label>
 
                                         <!-- Lista de candidatos -->
-                                        <div th:if="${not partido.candidatos.isEmpty()}" class="ms-4 mt-2">
-                                            <h6>Candidatos:</h6>
+                                        <div th:if="${not partido.candidatos.isEmpty()}" class="candidate-list mt-2">
+                                            <h6><i class="fas fa-users me-1"></i>Candidatos:</h6>
                                             <ul class="list-unstyled">
-                                                <li th:each="candidato : ${partido.candidatos}">
+                                                <li th:each="candidato : ${partido.candidatos}" class="mb-1">
+                                                    <i class="fas fa-user me-1"></i>
                                                     <span th:text="${candidato.nombre}"></span> -
                                                     <span th:text="${candidato.cargo}"></span>
                                                 </li>
                                             </ul>
                                         </div>
 
-                                        <div th:if="${partido.candidatos.isEmpty()}" class="ms-4 text-muted">
-                                            No hay candidatos registrados para este partido
+                                        <div th:if="${partido.candidatos.isEmpty()}" class="text-muted mt-2">
+                                            <i class="fas fa-info-circle me-1"></i>No hay candidatos registrados para este partido
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Emitir Voto</button>
-                    </form>
-                </div>
-            </div>
-        </main>
-        <footer class="py-4 bg-light mt-auto">
-            <div class="container-fluid px-4">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Gabriel Salazar 2025</div>
-                    <div>
-                        <a href="#">ITQ</a>
-                        &middot;
-                        <a href="#">Desarrollo &amp; Software</a>
                     </div>
                 </div>
-            </div>
-        </footer>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-4 py-2">
+                        <i class="fas fa-paper-plane me-2"></i>Emitir Voto
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+</main>
+
+<footer class="py-4 bg-light">
+    <div class="container-fluid">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between small">
+            <div class="text-muted mb-2 mb-md-0">
+                <i class="fas fa-copyright me-1"></i>Gabriel Salazar 2025
+            </div>
+            <div>
+                <a href="#" class="text-decoration-none me-2"><i class="fas fa-university me-1"></i>ITQ</a>
+                <span class="mx-1">•</span>
+                <a href="#" class="text-decoration-none"><i class="fas fa-code me-1"></i>Desarrollo & Software</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="assets/demo/chart-area-demo.js"></script>
 <script src="assets/demo/chart-bar-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
 <script src="js/datatables-simple-demo.js"></script>
 </body>
 </html>

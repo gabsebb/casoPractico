@@ -1,6 +1,8 @@
 com\example\votacionpresidencial\repositories\PersonaRepository.class
 com\example\votacionpresidencial\repositories\GeneroRepository.class
 com\example\votacionpresidencial\services\CiudadService.class
+com\example\votacionpresidencial\services\ReporteService.class
+com\example\votacionpresidencial\controllers\ReporteController.class
 com\example\votacionpresidencial\models\Candidato.class
 com\example\votacionpresidencial\config\PasswordConfig.class
 com\example\votacionpresidencial\services\CustomUserDetailsService.class
@@ -13,6 +15,8 @@ com\example\votacionpresidencial\services\VotoService.class
 com\example\votacionpresidencial\repositories\PartidoRepository.class
 com\example\votacionpresidencial\models\Ciudad.class
 com\example\votacionpresidencial\dtos\PersonaDTO.class
+com\example\votacionpresidencial\services\ReporteService$ReporteCompleto.class
+com\example\votacionpresidencial\services\ReporteService$DatosGrafico.class
 com\example\votacionpresidencial\controllers\VotoController.class
 com\example\votacionpresidencial\models\Genero.class
 com\example\votacionpresidencial\controllers\RegistroController.class
